@@ -1,0 +1,22 @@
+{
+  "tests": [
+    {
+      "name": "Get dialogs",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "dialogs", "user_id": 1},
+      "expectedStatus": 200,
+      "bodyMatcher": "partial",
+      "expectedBody": {"dialogs": []}
+    },
+    {
+      "name": "Get messages",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "get", "user_a": 1, "user_b": 2},
+      "expectedStatus": 200,
+      "bodyMatcher": "partial",
+      "expectedBody": {"messages": []}
+    }
+  ]
+}

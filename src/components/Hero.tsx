@@ -34,12 +34,12 @@ export default function Hero() {
           Быстрые чаты, кристально чистые звонки и надёжная защита данных — всё в одном приложении.
         </p>
         <div className="flex gap-4 justify-center">
-          <button className="bg-white text-black px-8 py-3 uppercase tracking-wide text-sm font-semibold hover:bg-neutral-200 transition-colors duration-300">
-            Скачать бесплатно
-          </button>
-          <button className="border border-white text-white px-8 py-3 uppercase tracking-wide text-sm hover:bg-white hover:text-black transition-colors duration-300">
-            Узнать больше
-          </button>
+          <a href="/app" className="bg-white text-black px-8 py-3 uppercase tracking-wide text-sm font-semibold hover:bg-neutral-200 transition-colors duration-300">
+            Открыть GoChat
+          </a>
+          <a href="#download" className="border border-white text-white px-8 py-3 uppercase tracking-wide text-sm hover:bg-white hover:text-black transition-colors duration-300">
+            Скачать приложение
+          </a>
         </div>
       </div>
     </div>
