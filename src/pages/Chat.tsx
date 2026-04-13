@@ -50,6 +50,15 @@ function formatTime(dateStr: string) {
   return d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 }
 
+const menuItems = [
+  { icon: "MessageCircle", label: "Мои сообщения" },
+  { icon: "Users", label: "Группы" },
+  { icon: "Bookmark", label: "Избранное" },
+  { icon: "Phone", label: "Звонки" },
+  { icon: "Settings", label: "Настройки" },
+  { icon: "HelpCircle", label: "Помощь" },
+];
+
 export default function Chat({ user, onLogout }: ChatProps) {
   const [contacts, setContacts] = useState<User[]>([]);
   const [dialogs, setDialogs] = useState<Dialog[]>([]);
@@ -58,6 +67,7 @@ export default function Chat({ user, onLogout }: ChatProps) {
   const [text, setText] = useState("");
   const [tab, setTab] = useState<"dialogs" | "contacts">("dialogs");
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -127,19 +137,60 @@ export default function Chat({ user, onLogout }: ChatProps) {
 
   return (
     <div className="flex h-screen bg-neutral-950 text-white overflow-hidden">
+
+      {/* Боковое меню (drawer) */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-50 flex">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setMenuOpen(false)} />
+          <div className="relative z-10 flex flex-col w-72 bg-neutral-900 h-full shadow-2xl">
+            {/* Шапка профиля */}
+            <div className="px-5 pt-10 pb-5 bg-neutral-800">
+              <Avatar name={user.display_name} color={user.avatar_color} size={56} />
+              <p className="font-bold text-lg mt-3">{user.display_name}</p>
+              <p className="text-neutral-400 text-sm mt-0.5">@{user.username}</p>
+            </div>
+
+            {/* Пункты меню */}
+            <nav className="flex-1 py-2 overflow-y-auto">
+              {menuItems.map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => setMenuOpen(false)}
+                  className="w-full flex items-center gap-4 px-5 py-3.5 hover:bg-neutral-800 transition-colors text-left"
+                >
+                  <Icon name={item.icon as "MessageCircle"} size={20} className="text-neutral-400" />
+                  <span className="text-sm font-medium">{item.label}</span>
+                </button>
+              ))}
+            </nav>
+
+            {/* Выход */}
+            <div className="border-t border-neutral-800 py-2">
+              <button
+                onClick={() => { setMenuOpen(false); onLogout(); }}
+                className="w-full flex items-center gap-4 px-5 py-3.5 hover:bg-neutral-800 transition-colors text-left text-red-400"
+              >
+                <Icon name="LogOut" size={20} />
+                <span className="text-sm font-medium">Выйти</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Sidebar */}
       <div className={`${sidebarOpen ? "flex" : "hidden"} md:flex flex-col w-full md:w-80 border-r border-neutral-800 bg-neutral-900 flex-shrink-0`}>
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-4 border-b border-neutral-800">
-          <div className="flex items-center gap-3">
-            <Avatar name={user.display_name} color={user.avatar_color} size={36} />
-            <div>
-              <p className="font-semibold text-sm">{user.display_name}</p>
-              <p className="text-neutral-400 text-xs">@{user.username}</p>
-            </div>
-          </div>
-          <button onClick={onLogout} className="text-neutral-500 hover:text-white transition-colors">
-            <Icon name="LogOut" size={18} />
+        <div className="flex items-center gap-3 px-4 py-4 border-b border-neutral-800">
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="text-neutral-400 hover:text-white transition-colors"
+          >
+            <Icon name="Menu" size={22} />
+          </button>
+          <p className="font-bold text-base flex-1">GoChat</p>
+          <button className="text-neutral-400 hover:text-white transition-colors">
+            <Icon name="Search" size={18} />
           </button>
         </div>
 
@@ -207,19 +258,23 @@ export default function Chat({ user, onLogout }: ChatProps) {
       <div className={`${!sidebarOpen || activeContact ? "flex" : "hidden"} md:flex flex-1 flex-col`}>
         {activeContact ? (
           <>
-            {/* Chat header */}
             <div className="flex items-center gap-3 px-4 py-4 border-b border-neutral-800 bg-neutral-900">
               <button onClick={() => setSidebarOpen(true)} className="md:hidden text-neutral-400 hover:text-white mr-1">
                 <Icon name="ArrowLeft" size={20} />
               </button>
               <Avatar name={activeContact.display_name} color={activeContact.avatar_color} size={36} />
-              <div>
+              <div className="flex-1">
                 <p className="font-semibold text-sm">{activeContact.display_name}</p>
                 <p className="text-neutral-400 text-xs">@{activeContact.username}</p>
               </div>
+              <button className="text-neutral-400 hover:text-white transition-colors">
+                <Icon name="Phone" size={18} />
+              </button>
+              <button className="text-neutral-400 hover:text-white transition-colors ml-2">
+                <Icon name="Video" size={18} />
+              </button>
             </div>
 
-            {/* Messages */}
             <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-2">
               {messages.length === 0 && (
                 <div className="text-center text-neutral-500 text-sm mt-16">
@@ -240,14 +295,13 @@ export default function Chat({ user, onLogout }: ChatProps) {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
             <div className="px-4 py-4 border-t border-neutral-800 bg-neutral-900 flex gap-3 items-end">
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
                 placeholder="Написать сообщение..."
-                className="flex-1 bg-neutral-800 border border-neutral-700 rounded-xl px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-600 text-sm resize-none"
+                className="flex-1 bg-neutral-800 border border-neutral-700 rounded-xl px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-600 text-sm"
               />
               <button
                 onClick={sendMessage}
