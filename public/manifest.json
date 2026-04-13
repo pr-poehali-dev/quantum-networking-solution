@@ -1,0 +1,25 @@
+{
+  "name": "GoChat — Мессенджер",
+  "short_name": "GoChat",
+  "description": "Быстрые чаты и звонки — GoChat мессенджер",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn.poehali.dev/projects/502e7f8c-2188-4d4a-8170-9d7e3b34be11/files/9a169c33-9298-4c49-968a-b00cf5a9d31a.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn.poehali.dev/projects/502e7f8c-2188-4d4a-8170-9d7e3b34be11/files/9a169c33-9298-4c49-968a-b00cf5a9d31a.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["social", "communication"]
+}
