@@ -25,13 +25,22 @@ export default function Hero() {
         />
       </motion.div>
 
-      <div className="relative z-10 text-center text-white">
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6">
-          ОТКРОЙ
+      <div className="relative z-10 text-center text-white px-6">
+        <p className="uppercase tracking-widest text-sm mb-4 opacity-70">Мессенджер нового поколения</p>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-none">
+          ОБЩАЙСЯ.<br />ЗВОНИ.<br />БУДЬ РЯДОМ.
         </h1>
-        <p className="text-lg md:text-xl max-w-2xl mx-auto px-6 opacity-90">
-          Исследуй границы дизайна с иммерсивным параллакс-эффектом
+        <p className="text-lg md:text-xl max-w-2xl mx-auto opacity-90 mb-8">
+          Быстрые чаты, кристально чистые звонки и надёжная защита данных — всё в одном приложении.
         </p>
+        <div className="flex gap-4 justify-center">
+          <button className="bg-white text-black px-8 py-3 uppercase tracking-wide text-sm font-semibold hover:bg-neutral-200 transition-colors duration-300">
+            Скачать бесплатно
+          </button>
+          <button className="border border-white text-white px-8 py-3 uppercase tracking-wide text-sm hover:bg-white hover:text-black transition-colors duration-300">
+            Узнать больше
+          </button>
+        </div>
       </div>
     </div>
   );
